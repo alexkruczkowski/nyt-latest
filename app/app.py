@@ -1,0 +1,1 @@
+""" Check recent crypto trades, store coin info in df, move to database on completion """
