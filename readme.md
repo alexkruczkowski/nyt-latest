@@ -1,5 +1,5 @@
-# Crypto Speculation Project
-A tool to discover emerging cryptos as they begin trading.
+# NYT Summary Tool
+A tool to discover the latest NYT bestsellers, top articles, and new movie reviews. 
 
 ## Contents
 
@@ -13,13 +13,13 @@ A tool to discover emerging cryptos as they begin trading.
 ## Overview
 
 ### What's the problem?
-There are too many new cryptos emerging to be able to learn about them all. To filter out some of the new projects, only those that meet certain criteria will be saved and stored in a database for further analysis. 
+Would like to be able to discover new books, top stories, and movies as they are released. 
 
 ### The Idea
-Find coin trades, check coins being traded against coins already discovered, add to the list if they meet the following criteria:
-* Criteria TBD
+Leverage the New York Times APIs to find the information required.
 
 ### Bringing the idea to life
+Create ETLs using Airflow and AWS services (S3, RDS, etc.).
 
 ## The Architecture
 
