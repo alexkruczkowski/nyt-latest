@@ -1,2 +1,2 @@
-""" Tests for crypto speculation app / tool """
+""" Tests for NYT news tool """
 import pytest 

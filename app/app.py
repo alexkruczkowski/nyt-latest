@@ -1,6 +1,1 @@
-""" Check recent crypto trades, store coin info in df, move to database on completion """
-import ccxt
-
-# Use ccxt library to get market data from diff exchanges, start with coinbase and binance
-print(ccxt.exchanges)
-
+""" Find the latest top stories, bestselling novels, and new movie reviews from the NYT """
