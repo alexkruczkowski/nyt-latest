@@ -1,1 +1,0 @@
-""" Find the latest top stories, bestselling novels, and new movie reviews from the NYT """
