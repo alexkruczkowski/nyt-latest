@@ -1,4 +1,4 @@
-""" Find the latest top stories, bestselling novels, and new movie reviews from the NYT """
+""" Find the bestselling novels from the NYT """
 import requests
 import json
 from datetime import date, timedelta
@@ -90,18 +90,31 @@ def check_if_valid_data(df: pd.DataFrame) -> bool:
 
     return True
 
-def load_books_data(books_dataframe):
+def load_books_data():
     """
     Temporarily load into a local CSV file, later load into S3 bucket.
     Before loading, use check_if_valid_data function to validate results.
+    If the file does not exist, create the file.
+    If the file already exists, append the data.
+    If the data already exists, do not load. 
     """
-    pass
+    final_df = combine_books_data()
 
-def run_books_etl():
-    """
-    Run ETL bestseller list. 
-    """
-    pass
+    # Validate results
+    if check_if_valid_data(final_df):
+        print("Data valid, proceed to Load stage")
 
-df = combine_books_data()
-print(df)
+    # Load
+    # set S3 parameters and then load into bucket using awswrangler
+    bucket = "nyt-api-bucket"
+    folder = "uploads"
+    file_name = "NYT_bestseller_data.csv"
+
+    try:
+        path1 = f"s3://{bucket}/{folder}/{file_name}"
+        final_df.to_csv(path1, index=False)
+        print("Df exported successfully")
+    except Exception as e:
+        print(f"{e} \nData not exported, please check errors")
+
+load_books_data()
