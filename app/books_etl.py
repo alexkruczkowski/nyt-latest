@@ -21,7 +21,6 @@ def connect_to_API(api_url, dt = YESTERDAYS_DT) -> str:
 def retrieve_books_data(r) -> pd.DataFrame:
     """
     Use NYT API to find books data including title, author, ranking info, and description.
-    Convert date to datetime for later validation.  
     Return pandas df.
     """
     data = r.json()
@@ -76,7 +75,7 @@ def check_if_valid_data(df: pd.DataFrame) -> bool:
     Check if there is data, if the primary key is unique, and if dates match. 
     """
     if df.empty:
-        print("No games found. Finishing execution")
+        print("No books found. Finishing execution")
         return False 
 
     if pd.Series(df['titles']).is_unique:
@@ -92,11 +91,8 @@ def check_if_valid_data(df: pd.DataFrame) -> bool:
 
 def load_books_data():
     """
-    Temporarily load into a local CSV file, later load into S3 bucket.
+    Load books df into csv file into S3 bucket.
     Before loading, use check_if_valid_data function to validate results.
-    If the file does not exist, create the file.
-    If the file already exists, append the data.
-    If the data already exists, do not load. 
     """
     final_df = combine_books_data()
 
@@ -104,8 +100,7 @@ def load_books_data():
     if check_if_valid_data(final_df):
         print("Data valid, proceed to Load stage")
 
-    # Load
-    # set S3 parameters and then load into bucket using awswrangler
+    # set S3 parameters and then load into bucket 
     bucket = "nyt-api-bucket"
     folder = "uploads"
     file_name = "NYT_bestseller_data.csv"
