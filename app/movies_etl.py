@@ -47,13 +47,20 @@ def retrieve_movies_data(r) -> pd.DataFrame:
 
     return movies_df
 
-def filter_movies_data(publication_dt: str) -> pd.DataFrame:
+def filter_movies_data() -> pd.DataFrame:
     """
-    Filter movies data for specific date range. 
-    Used to filter for last week only as the refresh frequency will be weekly.
-    Returns pandas df.
+    Filter movies data for last week as the ETL frequency will be weekly.
+    Returns desired pandas df.
     """
-    pass
+    yesterdays_dt = (date.today() - timedelta(1)).strftime('%Y-%m-%d')
+    week_ago = (date.today() - timedelta(7)).strftime('%Y-%m-%d')
+    # API date filter is start_dt:end_dt and uses the following format "YYYY-MM-DD:YYYY-MM-DD"
+    date_filter = f'{week_ago}:{yesterdays_dt}'
+
+    r = connect_to_API(date_filter)
+    movies_df = retrieve_movies_data(r)
+
+    return(movies_df)
 
 def check_if_valid_data(df: pd.DataFrame) -> bool:
     """
@@ -68,21 +75,25 @@ def check_if_valid_data(df: pd.DataFrame) -> bool:
         pass
     else:
         raise Exception("Primary Key check is violated, titles are not unqiue")
-    
-    # Check for nulls
-    if df.isnull().values.any():
-        raise Exception("Null values found")
 
-    # add a check for dates here 
+    # Check if there are publication dates in the date range selected 
+    date_list = []
+    for day in range(1,8):
+        date_list.append((date.today() - timedelta(day)).strftime('%Y-%m-%d'))
+    last_week_set = set(date_list)
+    timestamps = set(df["publication_date"].tolist())
+    # check if there is intersection between dates in the last week and the set of publication dates
+    if not (last_week_set & timestamps):
+        raise Exception("None of the dates returned match the dates selected")
 
     return True
 
-def load_movies_data(publication_dt: str):
+def load_movies_data():
     """
     Load movies df into csv file into S3 bucket.
     Before loading, use check_if_valid_data function to validate results.
     """
-    final_df = filter_movies_data(publication_dt)
+    final_df = filter_movies_data()
 
     # Validate results
     if check_if_valid_data(final_df):
@@ -100,6 +111,4 @@ def load_movies_data(publication_dt: str):
     except Exception as e:
         print(f"{e} \nData not exported, please check errors")
 
-r = connect_to_API("2021-06-01:2021-06-22")
-df = retrieve_movies_data(r)
-print(df)
+load_movies_data()
