@@ -6,8 +6,8 @@ import pytest
 import requests
 import pandas as pd
 from datetime import date, timedelta
-from app.books_etl import connect_to_API, retrieve_books_data, combine_books_data, check_if_valid_data
-from api_info import API_KEY
+from dags.books_etl import connect_to_API, retrieve_books_data, combine_books_data, check_if_valid_data
+from dags.api_info import API_KEY
 
 # NYT books base url, endpoints include book reviews and best seller lists
 BOOKS_BASE_URL = "https://api.nytimes.com/svc/books/v3/"
