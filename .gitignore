@@ -8,6 +8,12 @@ __pycache__/
 .vscode
 api_info.py
 
+# airflow
+webserver_config.py
+logs/
+airflow.cfg
+airflow.db
+
 # C extensions
 *.so
 
