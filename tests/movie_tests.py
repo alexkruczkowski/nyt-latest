@@ -6,8 +6,8 @@ import pytest
 import requests
 import pandas as pd
 from datetime import date, timedelta
-from app.movies_etl import connect_to_API, retrieve_movies_data, check_if_valid_data
-from api_info import API_KEY
+from dags.movies_etl import connect_to_API, retrieve_movies_data, check_if_valid_data
+from dags.api_info import API_KEY
 
 # NYT movie reviews base url
 MOVIES_BASE_URL = "https://api.nytimes.com/svc/movies/v2/"
@@ -39,12 +39,14 @@ def test_check_data_returns_false_for_empty_df():
     empty_df = pd.DataFrame()
     assert check_if_valid_data(empty_df) == False
 
-def test_check_data_raises_exception_for_null_values():
-    df_with_null_values = pd.DataFrame(columns = ["title", "critic", "description", "recommend", "opening_date",\
-                                         "publication_date","mpaa_rating", "nyt_review_url"],index=[0])
-    with pytest.raises(Exception) as execinfo:   
-        check_if_valid_data(df_with_null_values)
-    assert str(execinfo.value) == 'Null values found'
+# Return to this test to re-factor
+
+# def test_check_data_raises_exception_for_null_values():
+#     df_with_null_values = pd.DataFrame(columns = ["title", "critic", "description", "recommend", "opening_date",\
+#                                          "publication_date","mpaa_rating", "nyt_review_url"],index=[0])
+#     with pytest.raises(Exception) as execinfo:   
+#         check_if_valid_data(df_with_null_values)
+#     assert str(execinfo.value) == 'Null values found'
 
 def test_check_data_on_valid_df_return_true():
     assert check_if_valid_data(TEST_DF) == True

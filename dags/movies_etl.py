@@ -78,7 +78,7 @@ def check_if_valid_data(df: pd.DataFrame) -> bool:
 
     # Check if there are publication dates in the date range selected 
     date_list = []
-    for day in range(1,8):
+    for day in range(1,15):
         date_list.append((date.today() - timedelta(day)).strftime('%Y-%m-%d'))
     last_week_set = set(date_list)
     timestamps = set(df["publication_date"].tolist())
