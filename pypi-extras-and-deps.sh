@@ -1,0 +1,1 @@
+docker build . --build-arg PYTHON_BASE_IMAGE="python:3.8-slim-buster" --build-arg AIRFLOW_VERSION="2.1.0" --tag "$(basename "$0")"

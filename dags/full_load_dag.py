@@ -4,8 +4,8 @@ from airflow.operators.python import PythonOperator
 from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 from airflow.utils.dates import days_ago
 
-import dags.books_etl
-import dags.movies_etl
+import books_etl
+import movies_etl
 
 default_args = {
     'owner': 'airflow',
