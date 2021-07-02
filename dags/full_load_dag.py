@@ -4,8 +4,8 @@ from airflow.operators.python import PythonOperator
 from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 from airflow.utils.dates import days_ago
 
-import books_etl
-import movies_etl
+from books_etl import load_books_data
+from movies_etl import load_movies_data
 
 default_args = {
     'owner': 'airflow',
@@ -31,7 +31,7 @@ with DAG('nyt_full_load',
     )
 
     load_movies_s3 = PythonOperator(
-        task_id='books_etl',
+        task_id='movies_etl',
         python_callable=load_movies_data,
         dag=dag,
     )
