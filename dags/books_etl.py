@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import boto3 
 from io import StringIO
+import airflow.hooks.S3_hook
 from api_info import API_KEY
 
 # NYT books base url, endpoints include book reviews and best seller lists
@@ -90,10 +91,10 @@ def check_if_valid_data(df: pd.DataFrame) -> bool:
         raise Exception("Null values found")
 
     return True
-
+    
 def load_books_data():
     """
-    Load books df into csv file into S3 bucket.
+    Load books df into csv file into S3 bucket in airflow using S3 hook.
     Before loading, use check_if_valid_data function to validate results.
     """
     final_df = combine_books_data()
@@ -107,18 +108,13 @@ def load_books_data():
     folder = "uploads"
     file_name = "NYT_bestseller_data.csv"
     key = f"{folder}/{file_name}"
-    
-    # Set up s3 connection and temporary buffer for pandas df
-    s3 = boto3.client('s3')
-    csv_buffer = StringIO()
 
     try:
-        # Convert df to csv, upload to S3
-        final_df.to_csv(csv_buffer, index=False, encoding="utf-8")
-        content = csv_buffer.getvalue()
-        s3.put_object(Bucket=bucket, Body=content, Key=key)
+        # Convert df to csv, upload to S3 in airflow
+        final_df.to_csv(file_name, index=False, encoding="utf-8")
+        hook = airflow.hooks.S3_hook.S3Hook('my_S3_conn')
+        hook.load_file(bucket_name=bucket, filename=file_name, key=key, replace=True)
         print("Df exported successfully")
     except Exception as e:
         print(f"{e} \nData not exported, please check errors")
 
-load_books_data()
