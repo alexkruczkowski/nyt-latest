@@ -27,12 +27,14 @@ with DAG('nyt_full_load',
     load_bestsellers_s3 = PythonOperator(
         task_id='books_etl',
         python_callable=load_books_data,
+        # aws_conn_id='MY_S3_CONN',
         dag=dag,
     )
 
     load_movies_s3 = PythonOperator(
         task_id='movies_etl',
         python_callable=load_movies_data,
+        # aws_conn_id='MY_S3_CONN',
         dag=dag,
     )
 
