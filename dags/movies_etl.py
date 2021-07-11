@@ -4,6 +4,8 @@ import json
 from datetime import date, timedelta
 import pandas as pd
 import numpy as np
+import boto3 
+from io import StringIO
 from api_info import API_KEY
 
 # NYT movie reviews base url
@@ -103,10 +105,17 @@ def load_movies_data():
     bucket = "nyt-api-bucket"
     folder = "uploads"
     file_name = "NYT_movie_review_data.csv"
+    key = f"{folder}/{file_name}"
+
+    # Set up s3 connection and temporary buffer for pandas df
+    s3 = boto3.client('s3')
+    csv_buffer = StringIO()
 
     try:
-        path1 = f"s3://{bucket}/{folder}/{file_name}"
-        final_df.to_csv(path1, index=False)
+        # Convert df to csv, upload to S3
+        final_df.to_csv(csv_buffer, index=False, encoding="utf-8")
+        content = csv_buffer.getvalue()
+        s3.put_object(Bucket=bucket, Body=content, Key=key)
         print("Df exported successfully")
     except Exception as e:
         print(f"{e} \nData not exported, please check errors")
