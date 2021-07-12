@@ -1,7 +1,7 @@
 from datetime import timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-# from airflow.providers.amazon.aws.hooks.s3 import S3Hook
+from airflow.operators.postgres_operator import PostgresOperator
 from airflow.utils.dates import days_ago
 
 from books_etl import load_books_data
@@ -24,18 +24,25 @@ with DAG('nyt_full_load',
 		max_active_runs=1,
 		schedule_interval=None) as dag:
 
-    load_bestsellers_s3 = PythonOperator(
-        task_id='books_etl',
+    op1 = PythonOperator(
+        task_id='get_books_data',
         python_callable=load_books_data,
-        # aws_conn_id='MY_S3_CONN',
         dag=dag,
     )
 
-    load_movies_s3 = PythonOperator(
-        task_id='movies_etl',
+    op2 = PythonOperator(
+        task_id='get_movies_data',
         python_callable=load_movies_data,
-        # aws_conn_id='MY_S3_CONN',
         dag=dag,
     )
 
-load_bestsellers_s3 >> load_movies_s3
+    op3 = PostgresOperator(
+		task_id='initialize_target_db',
+		postgres_conn_id='Postres_NYT',
+		sql='sql/init_db_schema.sql',
+		dag=dag
+	)
+
+
+
+(op1, op2) 
