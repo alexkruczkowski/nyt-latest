@@ -4,8 +4,6 @@ import json
 from datetime import date, timedelta
 import pandas as pd
 import numpy as np
-import boto3 
-from io import StringIO
 import airflow.hooks.S3_hook
 from api_info import API_KEY
 
