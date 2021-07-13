@@ -2,8 +2,8 @@ from datetime import timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.operators.postgres_operator import PostgresOperator
+from operators.s3_to_postgres_operator import S3ToPostgresOperator
 from airflow.utils.dates import days_ago
-
 from books_etl import load_books_data
 from movies_etl import load_movies_data
 
@@ -43,5 +43,40 @@ with DAG('nyt_full_load',
 		dag=dag
 	)
 
+    op4 = S3ToPostgresOperator(
+		task_id='load_books_data',
+		s3_conn_id='my_S3_conn',
+		s3_bucket='nyt-api-bucket',
+		s3_prefix='uploads/NYT_bestseller_data',
+		source_data_type='csv',
+		header=True,
+		postgres_conn_id='postgres_conn',
+		schema='raw',
+		table='bestsellers_data',
+		get_latest=True,
+		dag=dag
+	)
 
-(op1, op2) >> op3
+    op5 = S3ToPostgresOperator(
+		task_id='load_movies_data',
+		s3_conn_id='my_S3_conn',
+		s3_bucket='nyt-api-bucket',
+		s3_prefix='uploads/NYT_movie_review_data',
+		source_data_type='csv',
+		header=True,
+		postgres_conn_id='postgres_conn',
+		schema='raw',
+		table='movies_data',
+		get_latest=True,
+		dag=dag
+	)
+
+    op6 = PostgresOperator(
+		task_id='execute_incremental_load',
+		postgres_conn_id='postgres_conn',
+		sql='sql/incremental_load.sql',
+		dag=dag
+	)
+
+
+(op1, op2) >> op3 >> (op4, op5)
