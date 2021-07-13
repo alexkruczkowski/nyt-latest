@@ -38,11 +38,10 @@ with DAG('nyt_full_load',
 
     op3 = PostgresOperator(
 		task_id='initialize_target_db',
-		postgres_conn_id='Postres_NYT',
+		postgres_conn_id='postgres_conn',
 		sql='sql/init_db_schema.sql',
 		dag=dag
 	)
 
 
-
-(op1, op2) 
+(op1, op2) >> op3

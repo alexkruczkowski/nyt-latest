@@ -114,5 +114,3 @@ def load_movies_data():
         print("Df exported successfully")
     except Exception as e:
         print(f"{e} \nData not exported, please check errors")
-
-load_movies_data()
