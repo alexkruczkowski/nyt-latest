@@ -51,6 +51,24 @@ CREATE table if not exists staging.bestsellers_data (
 	amazon_url text
 );
 
+--DROP TABLE staging.dim_date;
+CREATE TABLE if not exists staging.dim_date(
+	date date,
+	year int,
+	year_quarter int,
+	month int,
+	day int,
+	weekend text
+);
+
+--DROP TABLE staging.dim_ratings;
+CREATE TABLE if not exists staging.dim_ratings(
+	rating text,
+	description text,
+	audience text,
+	date_updated date
+);
+
 --DROP TABLE prod.movies_data;
 CREATE TABLE if not exists prod.movies_data (
 	display_title text,
@@ -73,4 +91,22 @@ CREATE table if not exists prod.bestsellers_data (
 	weeks_on_list text,
 	bestseller_date timestamp,
 	amazon_url text
+);
+
+--DROP TABLE prod.dim_date;
+CREATE TABLE if not exists prod.dim_date(
+	date date,
+	year int,
+	year_quarter int,
+	month int,
+	day int,
+	weekend text
+);
+
+--DROP TABLE prod.dim_ratings;
+CREATE TABLE if not exists prod.dim_ratings(
+	rating text,
+	description text,
+	audience text,
+	date_updated date
 );
