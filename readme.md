@@ -31,7 +31,7 @@ Insert image here
 4. Use an analytics tool to create a dashboard with data from the RDS tables
 
 ### Infrastructure
-The project is hosted using the AWS ecosystem and uses an RDS database (t2.micro) with the docker compose container soon coming to ECS + metabase dashboard soon to be hosted on elastic beanstalk. 
+The project is self-contained within a docker-compose container and hosted using the AWS ecosystem. An RDS postgres database (t2.micro) contains all the data, a docker-compose container is hosted on ECS and a metabase dashboard is hosted on elastic beanstalk. 
 
 See below for a snapshot of the resources used:
 
@@ -41,10 +41,18 @@ A publically accessible dashboard can be found here:
 With screenshots below:
 
 ## Built With
-Docker, AWS S3, AWS RDS (Postgres), Python, SQL
+Python, SQL, Docker, AWS S3, AWS RDS (Postgres), AWS ECS
 
 ## Next Steps
-Time permitting, implement structural improvements to the database to make use of reference tables and add additional data/columns to the existing tables for a richer dataset.
+<s>Develop ETLs and tests for NYT bestsellers and movie reviews APIs</s>
+<s>Create a process to load into S3</s>
+<s>Schedule using airflow</s>
+<s>Move all proceses to a local docker-compose container</s>
+<s>Add SQL logic to create schemas/tables and read from postgres db</s>
+<s>Create process to load csv files from S3 into postgres raw tables</s>
+<s>Finalize table staging and prod table structure and add logic to load</s>
+Add historical data and connect metabase to dashboard
+Time permitting, add additional data and fields to the existing tables for a richer dataset.
 
 ## Author
 :wave:
