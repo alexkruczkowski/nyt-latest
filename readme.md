@@ -22,9 +22,10 @@ Leverage the New York Times APIs to summarize interesting book and movie informa
 Create an ETL process to store and summarize data in AWS - build a dashboard on top of this data for some fun stats. 
 
 ## The Architecture
-Insert image here
+Work in progress, image to be added here shortly. 
 
 ### ETL flow
+![Airflow Setup](images/Project-Airflow.png)
 1. Load data from NYT bestsellers and movie reviews API into AWS S3 bucket
 2. Create base tables in AWS RDS
 3. Load and summarize data from S3 to RDS (Postgres)
@@ -44,14 +45,14 @@ With screenshots below:
 Python, SQL, Docker, AWS S3, AWS RDS (Postgres), AWS ECS
 
 ## Next Steps
-<s>Develop ETLs and tests for NYT bestsellers and movie reviews APIs</s>
-<s>Create a process to load into S3</s>
-<s>Schedule using airflow</s>
-<s>Move all proceses to a local docker-compose container</s>
-<s>Add SQL logic to create schemas/tables and read from postgres db</s>
-<s>Create process to load csv files from S3 into postgres raw tables</s>
-<s>Finalize table staging and prod table structure and add logic to load</s>
-Add historical data and connect metabase to dashboard
+<s>Develop ETLs and tests for NYT bestsellers and movie reviews APIs</s> <br />
+<s>Create a process to load into S3</s> <br />
+<s>Schedule using airflow</s> <br />
+<s>Move all proceses to a local docker-compose container</s> <br />
+<s>Add SQL logic to create schemas/tables and read from postgres db</s> <br />
+<s>Create process to load csv files from S3 into postgres raw tables</s> <br />
+<s>Finalize table staging and prod table structure and add logic to load</s> <br />
+Add historical data and connect metabase to dashboard <br />
 Time permitting, add additional data and fields to the existing tables for a richer dataset.
 
 ## Author

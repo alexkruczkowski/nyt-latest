@@ -72,11 +72,11 @@ with DAG('nyt_full_load',
 	)
 
     op6 = PostgresOperator(
-		task_id='execute_incremental_load',
+		task_id='execute_full_load',
 		postgres_conn_id='postgres_conn',
-		sql='sql/incremental_load.sql',
+		sql='sql/full_load.sql',
 		dag=dag
 	)
 
 
-(op1, op2) >> op3 >> (op4, op5)
+(op1, op2) >> op3 >> (op4, op5) >> op6
