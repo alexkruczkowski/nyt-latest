@@ -54,7 +54,7 @@ def filter_movies_data() -> pd.DataFrame:
     Returns desired pandas df.
     """
     yesterdays_dt = (date.today() - timedelta(1)).strftime('%Y-%m-%d')
-    week_ago = (date.today() - timedelta(7)).strftime('%Y-%m-%d')
+    week_ago = (date.today() - timedelta(8)).strftime('%Y-%m-%d')
     # API date filter is start_dt:end_dt and uses the following format "YYYY-MM-DD:YYYY-MM-DD"
     date_filter = f'{week_ago}:{yesterdays_dt}'
 
@@ -66,16 +66,11 @@ def filter_movies_data() -> pd.DataFrame:
 def check_if_valid_data(df: pd.DataFrame) -> bool:
     """
     Data validation used before proceeding to load stage.
-    Check if there is data, if the primary key is unique, and if dates match. 
+    Check if there is data and if dates match. 
     """
     if df.empty:
         print("No movie reivews found. Finishing execution")
         return False 
-
-    if pd.Series(df['title']).is_unique:
-        pass
-    else:
-        raise Exception("Primary Key check is violated, titles are not unqiue")
 
     # Check if there are publication dates in the date range selected 
     date_list = []

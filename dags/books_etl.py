@@ -73,7 +73,7 @@ def combine_books_data(dt = YESTERDAYS_DT) -> pd.DataFrame:
 def check_if_valid_data(df: pd.DataFrame) -> bool:
     """
     Data validation used before proceeding to load stage.
-    Check if there is data, if the primary key is unique, and if dates match. 
+    Check if there is data and if the primary key is unique. 
     """
     if df.empty:
         print("No books found. Finishing execution")
