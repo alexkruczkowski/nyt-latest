@@ -1,5 +1,5 @@
 
---populate movies staging table
+--populate movies staging tabl
 
 insert into staging.movies_data (display_title, critic, description, recommend,
 	opening_date, publication_date, mpaa_rating, nyt_review_url)
